@@ -444,6 +444,7 @@
         "type": "postgres",
         "uid": "P20B04A4F018B89F3"
       },
+      "description": "",
       "fieldConfig": {
         "defaults": {
           "color": {
@@ -502,7 +503,7 @@
                 "color": {
                   "fixed": "yellow"
                 },
-                "opacity": 0.4,
+                "opacity": 0.5,
                 "rotation": {
                   "fixed": 0,
                   "max": 360,
@@ -564,7 +565,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  ST_X(p.geoloc::geometry) as latitude, \n  ST_Y(p.geoloc::geometry) as longitude,\n  COUNT(pp.id) as \"total stock\",\n  p.name\nFROM pharmacies p\n  JOIN pharmacy_presentations pp ON p.id=pp.pharmacy_id AND pp.stock > 0\nGROUP BY p.id\n",
+          "rawSql": "SELECT \n  ST_X(p.geoloc::geometry) as latitude, \n  ST_Y(p.geoloc::geometry) as longitude,\n  COUNT(pp.id) as \"total stock\",\n  p.name\nFROM pharmacies p\n  JOIN pharmacy_presentations pp ON p.id=pp.pharmacy_id AND pp.stock > 0\nWHERE $__timeFilter(pp.updated_at)\nGROUP BY p.id\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -591,7 +592,7 @@
           "table": "pharmacies"
         }
       ],
-      "title": "Panel Title",
+      "title": "Geolocalisation du nombre de lignes mises à jour",
       "type": "geomap"
     }
   ],
@@ -603,13 +604,13 @@
     "list": []
   },
   "time": {
-    "from": "now-3h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Pharmacies stock updates",
   "uid": "a1cf3243-7e44-483f-9eaa-6eff279fd188",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
