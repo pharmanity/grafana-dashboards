@@ -112,7 +112,7 @@
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroup(pp.updated_at, '5s'),\n  COUNT(pp.stock) as value,\n  p.name as metric \nFROM\n  pharmacy_presentations pp\n    JOIN pharmacies p ON p.id=pp.pharmacy_id\nWHERE $__timeFilter(pp.updated_at)\nGROUP BY p.name, time\nORDER BY time",
+          "rawSql": "SELECT\n  $__timeGroup(pp.created_at, '5s'),\n  COUNT(pp.stock) as value,\n  p.name as metric \nFROM\n  pharmacy_presentation_histories pp\n    JOIN pharmacies p ON p.id=pp.pharmacy_id\nWHERE $__timeFilter(pp.created_at)\nGROUP BY p.name, time\nORDER BY time",
           "refId": "A",
           "sql": {
             "columns": [
@@ -193,7 +193,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  l.flux as metric, \n  COUNT(pp.stock) as value\nFROM\n  pharmacy_presentations pp\n    JOIN pharmacies p ON p.id=pp.pharmacy_id\n    JOIN lgos l ON l.pharmacy_id=p.id\nWHERE $__timeFilter(pp.updated_at) \nGROUP BY l.flux",
+          "rawSql": "SELECT \n  l.flux as metric, \n  COUNT(pp.stock) as value\nFROM\n  pharmacy_presentation_histories pp\n    JOIN pharmacies p ON p.id=pp.pharmacy_id\n    JOIN lgos l ON l.pharmacy_id=p.id\nWHERE $__timeFilter(pp.created_at) \nGROUP BY l.flux",
           "refId": "A",
           "sql": {
             "columns": [
@@ -308,7 +308,7 @@
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroup(pp.updated_at, '5s'),\n  COUNT(pp.stock) as value,\n  l.name as metric \nFROM\n  pharmacy_presentations pp\n    JOIN pharmacies p ON p.id=pp.pharmacy_id\n     JOIN lgos l ON l.pharmacy_id=p.id\nWHERE $__timeFilter(pp.updated_at)\nGROUP BY l.name, time\nORDER BY time",
+          "rawSql": "SELECT\n  $__timeGroup(pp.created_at, '5s'),\n  COUNT(pp.stock) as value,\n  l.name as metric \nFROM\n  pharmacy_presentation_histories pp\n    JOIN pharmacies p ON p.id=pp.pharmacy_id\n     JOIN lgos l ON l.pharmacy_id=p.id\nWHERE $__timeFilter(pp.created_at)\nGROUP BY l.name, time\nORDER BY time",
           "refId": "A",
           "sql": {
             "columns": [
@@ -415,7 +415,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  l.name as metric, \n  COUNT(pp.stock) as value\nFROM\n  pharmacy_presentations pp\n    JOIN pharmacies p ON p.id=pp.pharmacy_id\n    JOIN lgos l ON l.pharmacy_id=p.id\nWHERE $__timeFilter(pp.updated_at) \nGROUP BY l.name",
+          "rawSql": "SELECT \n  l.name as metric, \n  COUNT(pp.stock) as value\nFROM\n  pharmacy_presentation_histories pp\n    JOIN pharmacies p ON p.id=pp.pharmacy_id\n    JOIN lgos l ON l.pharmacy_id=p.id\nWHERE $__timeFilter(pp.created_at) \nGROUP BY l.name",
           "refId": "A",
           "sql": {
             "columns": [
@@ -555,7 +555,7 @@
           "zoom": 6.43
         }
       },
-      "pluginVersion": "10.0.1",
+      "pluginVersion": "10.0.2",
       "targets": [
         {
           "datasource": {
@@ -565,7 +565,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  ST_X(p.geoloc::geometry) as latitude, \n  ST_Y(p.geoloc::geometry) as longitude,\n  COUNT(pp.id) as \"total stock\",\n  p.name\nFROM pharmacies p\n  JOIN pharmacy_presentations pp ON p.id=pp.pharmacy_id AND pp.stock > 0\nWHERE $__timeFilter(pp.updated_at)\nGROUP BY p.id\n",
+          "rawSql": "SELECT \n  ST_X(p.geoloc::geometry) as latitude, \n  ST_Y(p.geoloc::geometry) as longitude,\n  COUNT(pp.id) as \"total stock\",\n  p.name\nFROM pharmacies p\n  JOIN pharmacy_presentation_histories pp ON p.id=pp.pharmacy_id AND pp.stock > 0\nWHERE $__timeFilter(pp.created_at)\nGROUP BY p.id\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -596,7 +596,7 @@
       "type": "geomap"
     }
   ],
-  "refresh": false,
+  "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -604,13 +604,13 @@
     "list": []
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-3h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "Pharmacies stock updates",
   "uid": "a1cf3243-7e44-483f-9eaa-6eff279fd188",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
