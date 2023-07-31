@@ -133,7 +133,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT \n  $__time(f.file_date),\n  EXTRACT(EPOCH FROM (f.processed_date - f.fetched_at)) AS process_time \nFROM stock_file f\nWHERE \n  $__timeFilter(f.file_date)\n  and f.pharmacy_id IN(${pharmacy})\n  and f.processed_date is not null \n  and f.fetched_at is not null\n ",
+          "rawSql": "SELECT \n  $__time(f.file_date),\n  EXTRACT(EPOCH FROM (f.processed_date - f.fetched_at)) AS process_time \nFROM stock_file f\nWHERE \n  $__timeFilter(f.file_date)\n  and f.error_message is null\n  and f.pharmacy_id IN(${pharmacy})\n  and f.processed_date is not null \n  and f.fetched_at is not null\n ",
           "refId": "A",
           "sql": {
             "columns": [
@@ -346,7 +346,7 @@
       "type": "table"
     }
   ],
-  "refresh": "",
+  "refresh": "30s",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -354,7 +354,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -378,13 +378,13 @@
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-12h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "stock files",
   "uid": "e1bf725a-7562-40fc-bf75-f138b06da41e",
-  "version": 14,
+  "version": 15,
   "weekStart": ""
 }
