@@ -38,7 +38,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "barAlignment": 0,
+            "barAlignment": 1,
             "drawStyle": "bars",
             "fillOpacity": 51,
             "gradientMode": "none",
@@ -100,6 +100,10 @@
               {
                 "id": "custom.lineWidth",
                 "value": 1
+              },
+              {
+                "id": "unit",
+                "value": "dthms"
               }
             ]
           }
@@ -278,7 +282,68 @@
             ]
           }
         },
-        "overrides": []
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_message"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 573
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "pharmacy_v2_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 125
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "lgo_name"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 129
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "pharmacy_id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 251
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "file_date"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 167
+              }
+            ]
+          }
+        ]
       },
       "gridPos": {
         "h": 17,
@@ -305,7 +370,7 @@
           }
         ]
       },
-      "pluginVersion": "10.0.2",
+      "pluginVersion": "10.0.3",
       "targets": [
         {
           "datasource": {
@@ -315,7 +380,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  f.file_date,\n  p.pharmacy_v2_id ,\n  p.lgo_name,\n  f.error_message,\n  f.service_origin,\n  (f.processed_date - f.fetched_at) as process_time\nFROM stock_file f\n  JOIN pharmacy_lgo p ON f.pharmacy_id=p.pharmacy_id\nWHERE \n  $__timeFilter(f.file_date)\n  and p.pharmacy_id IN(${pharmacy})\nORDER BY f.file_date desc",
+          "rawSql": "SELECT \n  f.file_date,\n  p.pharmacy_id,\n  p.pharmacy_v2_id ,\n  p.lgo_name,\n  f.error_message,\n  f.service_origin,\n  (f.processed_date - f.fetched_at) as process_time\nFROM stock_file f\n  JOIN pharmacy_lgo p ON f.pharmacy_id=p.pharmacy_id\nWHERE \n  $__timeFilter(f.file_date)\n  and p.pharmacy_id IN(${pharmacy})\nORDER BY f.file_date desc",
           "refId": "A",
           "sql": {
             "columns": [
@@ -346,7 +411,7 @@
       "type": "table"
     }
   ],
-  "refresh": "30s",
+  "refresh": "",
   "schemaVersion": 38,
   "style": "dark",
   "tags": [],
@@ -354,7 +419,7 @@
     "list": [
       {
         "current": {
-          "selected": false,
+          "selected": true,
           "text": "All",
           "value": "$__all"
         },
@@ -378,13 +443,13 @@
     ]
   },
   "time": {
-    "from": "now-12h",
+    "from": "now-6h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "stock files",
   "uid": "e1bf725a-7562-40fc-bf75-f138b06da41e",
-  "version": 15,
+  "version": 16,
   "weekStart": ""
 }
