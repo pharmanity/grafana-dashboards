@@ -38,7 +38,7 @@
             "axisColorMode": "text",
             "axisLabel": "",
             "axisPlacement": "auto",
-            "barAlignment": 1,
+            "barAlignment": 0,
             "drawStyle": "bars",
             "fillOpacity": 51,
             "gradientMode": "none",
@@ -137,7 +137,7 @@
           "editorMode": "code",
           "format": "time_series",
           "rawQuery": true,
-          "rawSql": "SELECT \n  $__time(f.file_date),\n  EXTRACT(EPOCH FROM (f.processed_date - f.fetched_at)) AS process_time \nFROM stock_file f\nWHERE \n  $__timeFilter(f.file_date)\n  and f.error_message is null\n  and f.pharmacy_id IN(${pharmacy})\n  and f.processed_date is not null \n  and f.fetched_at is not null\n ",
+          "rawSql": "SELECT \n  $__time(f.file_date),\n  EXTRACT(EPOCH FROM (f.processed_date - f.fetched_at)) AS process_time \nFROM stock_file f\n  JOIN pharmacy_lgo l ON f.pharmacy_id=l.pharmacy_id\nWHERE \n  $__timeFilter(f.file_date)\n  and f.error_message is null\n  and f.pharmacy_id IN(${pharmacy})\n  and l.lgo_name IN(${lgo})\n  and f.processed_date is not null \n  and f.fetched_at is not null\n ",
           "refId": "A",
           "sql": {
             "columns": [
@@ -167,7 +167,7 @@
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT \n  $__timeGroup(f.file_date, '60s'),\n  COUNT(*) AS error_count \nFROM stock_file f\n  WHERE $__timeFilter(f.file_date) \n    and f.pharmacy_id IN(${pharmacy})\n    and f.error_message is not null\nGROUP BY time\n",
+          "rawSql": "SELECT \n  $__timeGroup(f.file_date, '60s'),\n  COUNT(*) AS error_count \nFROM stock_file f\n  JOIN pharmacy_lgo l ON f.pharmacy_id=l.pharmacy_id\nWHERE $__timeFilter(f.file_date) \n  and f.pharmacy_id IN(${pharmacy})\n  and l.lgo_name IN(${lgo})\n  and f.error_message is not null\nGROUP BY time\n",
           "refId": "B",
           "sql": {
             "columns": [
@@ -196,7 +196,7 @@
           "format": "time_series",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroup(f.file_date, '60s'),\n  COUNT(*) AS waiting_count\nFROM\n  stock_file f\nWHERE\n  $__timeFilter(f.file_date)\n  and f.pharmacy_id IN(${pharmacy})\n  and f.processed_date is null\nGROUP BY\n  time\n",
+          "rawSql": "SELECT\n  $__timeGroup(f.file_date, '60s'),\n  COUNT(*) AS waiting_count\nFROM\n  stock_file f\n  JOIN pharmacy_lgo l ON f.pharmacy_id=l.pharmacy_id\nWHERE\n  $__timeFilter(f.file_date)\n  and f.pharmacy_id IN(${pharmacy})\n  and l.lgo_name IN(${lgo})\n  and f.processed_date is null\nGROUP BY\n  time\n",
           "refId": "C",
           "sql": {
             "columns": [
@@ -225,7 +225,7 @@
           "format": "table",
           "hide": false,
           "rawQuery": true,
-          "rawSql": "SELECT\n  $__timeGroup(f.file_date, '60s'),\n  COUNT(*) AS success_count\nFROM\n  stock_file f\nWHERE\n  $__timeFilter(f.file_date)\n  and f.pharmacy_id IN(${pharmacy})\n  and f.processed_date is not null and error_message is null\nGROUP BY\n  time",
+          "rawSql": "SELECT\n  $__timeGroup(f.file_date, '60s'),\n  COUNT(*) AS success_count\nFROM\n  stock_file f\n  JOIN pharmacy_lgo l ON f.pharmacy_id=l.pharmacy_id\nWHERE\n  $__timeFilter(f.file_date)\n  and f.pharmacy_id IN(${pharmacy})\n  and l.lgo_name IN(${lgo})\n  and f.processed_date is not null and error_message is null\nGROUP BY\n  time",
           "refId": "D",
           "sql": {
             "columns": [
@@ -380,7 +380,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  f.file_date,\n  p.pharmacy_id,\n  p.pharmacy_v2_id ,\n  p.lgo_name,\n  f.error_message,\n  f.service_origin,\n  (f.processed_date - f.fetched_at) as process_time\nFROM stock_file f\n  JOIN pharmacy_lgo p ON f.pharmacy_id=p.pharmacy_id\nWHERE \n  $__timeFilter(f.file_date)\n  and p.pharmacy_id IN(${pharmacy})\nORDER BY f.file_date desc",
+          "rawSql": "SELECT \n  f.file_date,\n  p.pharmacy_id,\n  p.pharmacy_v2_id ,\n  p.lgo_name,\n  f.error_message,\n  f.service_origin,\n  (f.processed_date - f.fetched_at) as process_time\nFROM stock_file f\n  JOIN pharmacy_lgo p ON f.pharmacy_id=p.pharmacy_id\nWHERE \n  $__timeFilter(f.file_date)\n  and p.pharmacy_id IN(${pharmacy})\n  and p.lgo_name IN(${lgo})\nORDER BY f.file_date desc",
           "refId": "A",
           "sql": {
             "columns": [
@@ -419,7 +419,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -439,17 +439,40 @@
         "skipUrlSync": false,
         "sort": 0,
         "type": "query"
+      },
+      {
+        "current": {
+          "selected": true,
+          "text": "All",
+          "value": "$__all"
+        },
+        "datasource": {
+          "type": "postgres",
+          "uid": "P47ACC421B078165A"
+        },
+        "definition": "select lgo_name from pharmacy_lgo group by lgo_name",
+        "hide": 0,
+        "includeAll": true,
+        "multi": false,
+        "name": "lgo",
+        "options": [],
+        "query": "select lgo_name from pharmacy_lgo group by lgo_name",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
       }
     ]
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-24h",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "stock files",
   "uid": "e1bf725a-7562-40fc-bf75-f138b06da41e",
-  "version": 16,
+  "version": 18,
   "weekStart": ""
 }
