@@ -106,6 +106,26 @@
                 "value": "dthms"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "file_count"
+            },
+            "properties": [
+              {
+                "id": "custom.drawStyle",
+                "value": "line"
+              },
+              {
+                "id": "custom.fillOpacity",
+                "value": 0
+              },
+              {
+                "id": "custom.lineWidth",
+                "value": 2
+              }
+            ]
           }
         ]
       },
@@ -227,6 +247,35 @@
           "rawQuery": true,
           "rawSql": "SELECT\n  $__timeGroup(f.file_date, '60s'),\n  COUNT(*) AS success_count\nFROM\n  stock_file f\n  JOIN pharmacy_lgo l ON f.pharmacy_id=l.pharmacy_id\nWHERE\n  $__timeFilter(f.file_date)\n  and f.pharmacy_id IN(${pharmacy})\n  and l.lgo_name IN(${lgo})\n  and f.processed_date is not null and error_message is null\nGROUP BY\n  time",
           "refId": "D",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        },
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "P47ACC421B078165A"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "hide": false,
+          "rawQuery": true,
+          "rawSql": "SELECT \n  $__timeGroup(f.file_date, '1h'),\n  COUNT(f.*) AS file_count\nFROM stock_file f\nWHERE \n  $__timeFilter(f.file_date)\nGROUP BY\n  time\n ",
+          "refId": "E",
           "sql": {
             "columns": [
               {
@@ -442,7 +491,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -466,13 +515,13 @@
     ]
   },
   "time": {
-    "from": "now-24h",
+    "from": "now-2d",
     "to": "now"
   },
   "timepicker": {},
   "timezone": "",
   "title": "stock files",
   "uid": "e1bf725a-7562-40fc-bf75-f138b06da41e",
-  "version": 18,
+  "version": 19,
   "weekStart": ""
 }
