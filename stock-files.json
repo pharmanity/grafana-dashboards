@@ -47,6 +47,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 0,
             "pointSize": 1,
@@ -157,6 +158,7 @@
               "tooltip": false,
               "viz": false
             },
+            "insertNulls": false,
             "lineInterpolation": "linear",
             "lineWidth": 0,
             "pointSize": 1,
@@ -401,7 +403,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 573
+                "value": 463
               }
             ]
           },
@@ -413,7 +415,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 125
+                "value": 172
               }
             ]
           },
@@ -437,7 +439,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 251
+                "value": 181
               }
             ]
           },
@@ -449,7 +451,79 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 167
+                "value": 157
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "process_time"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 161
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stock_creations"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 124
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "stock_updates"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 113
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "service_origin"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 121
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "creations"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 82
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "updates"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 75
               }
             ]
           }
@@ -480,7 +554,7 @@
           }
         ]
       },
-      "pluginVersion": "10.0.3",
+      "pluginVersion": "10.1.0",
       "targets": [
         {
           "datasource": {
@@ -490,7 +564,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT \n  f.file_date,\n  p.pharmacy_id,\n  p.pharmacy_v2_id ,\n  p.lgo_name,\n  f.error_message,\n  f.service_origin,\n  (f.processed_date - f.fetched_at) as process_time\nFROM stock_file f\n  JOIN pharmacy_lgo p ON f.pharmacy_id=p.pharmacy_id\nWHERE \n  $__timeFilter(f.file_date)\n  and p.pharmacy_id IN(${pharmacy})\n  and p.lgo_name IN(${lgo})\nORDER BY f.file_date desc",
+          "rawSql": "SELECT \n  f.file_date,\n  p.pharmacy_id,\n  p.pharmacy_v2_id ,\n  p.lgo_name,\n  f.error_message,\n  f.service_origin,\n  (date_trunc('second', f.processed_date) - date_trunc('second', f.fetched_at)) as process_time,\n  f.stock_creations as creations,\n  f.stock_updates as updates\nFROM stock_file f\n  JOIN pharmacy_lgo p ON f.pharmacy_id=p.pharmacy_id\nWHERE \n  $__timeFilter(f.file_date)\n  and p.pharmacy_id IN(${pharmacy})\n  and p.lgo_name IN(${lgo})\nORDER BY f.file_date desc",
           "refId": "A",
           "sql": {
             "columns": [
@@ -529,7 +603,7 @@
     "list": [
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -552,7 +626,7 @@
       },
       {
         "current": {
-          "selected": true,
+          "selected": false,
           "text": "All",
           "value": "$__all"
         },
@@ -583,6 +657,6 @@
   "timezone": "",
   "title": "stock files",
   "uid": "e1bf725a-7562-40fc-bf75-f138b06da41e",
-  "version": 20,
+  "version": 21,
   "weekStart": ""
 }
