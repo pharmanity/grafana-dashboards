@@ -18,10 +18,145 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 4,
   "links": [],
   "liveNow": false,
   "panels": [
+    {
+      "datasource": {
+        "type": "prometheus",
+        "uid": "P187811B30F96DBAD"
+      },
+      "description": "",
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "palette-classic"
+          },
+          "custom": {
+            "axisBorderShow": false,
+            "axisCenteredZero": false,
+            "axisColorMode": "text",
+            "axisLabel": "",
+            "axisPlacement": "auto",
+            "barAlignment": 0,
+            "drawStyle": "line",
+            "fillOpacity": 0,
+            "gradientMode": "none",
+            "hideFrom": {
+              "legend": false,
+              "tooltip": false,
+              "viz": false
+            },
+            "insertNulls": false,
+            "lineInterpolation": "linear",
+            "lineWidth": 1,
+            "pointSize": 5,
+            "scaleDistribution": {
+              "type": "linear"
+            },
+            "showPoints": "auto",
+            "spanNulls": false,
+            "stacking": {
+              "group": "A",
+              "mode": "none"
+            },
+            "thresholdsStyle": {
+              "mode": "off"
+            }
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          },
+          "unit": "s"
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 4,
+      "options": {
+        "legend": {
+          "calcs": [],
+          "displayMode": "list",
+          "placement": "bottom",
+          "showLegend": true
+        },
+        "tooltip": {
+          "mode": "single",
+          "sort": "none"
+        }
+      },
+      "targets": [
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P187811B30F96DBAD"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "pharmanity_stock_v1_latency_seconds",
+          "fullMetaSearch": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "interval": "",
+          "legendFormat": "{{__name__}}",
+          "range": true,
+          "refId": "A",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P187811B30F96DBAD"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "pharmanity_stock_v2_latency_seconds",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{__name__}}",
+          "range": true,
+          "refId": "B",
+          "useBackend": false
+        },
+        {
+          "datasource": {
+            "type": "prometheus",
+            "uid": "P187811B30F96DBAD"
+          },
+          "disableTextWrap": false,
+          "editorMode": "builder",
+          "expr": "pharmanity_stock_file_v2_latency_seconds",
+          "fullMetaSearch": false,
+          "hide": false,
+          "includeNullMetadata": true,
+          "instant": false,
+          "legendFormat": "{{__name__}}",
+          "range": true,
+          "refId": "C",
+          "useBackend": false
+        }
+      ],
+      "title": "Latence",
+      "type": "timeseries"
+    },
     {
       "datasource": {
         "type": "postgres",
@@ -34,6 +169,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -82,10 +218,10 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 7,
+        "h": 5,
         "w": 24,
         "x": 0,
-        "y": 0
+        "y": 6
       },
       "id": 3,
       "options": {
@@ -145,6 +281,7 @@
             "mode": "palette-classic"
           },
           "custom": {
+            "axisBorderShow": false,
             "axisCenteredZero": false,
             "axisColorMode": "text",
             "axisLabel": "",
@@ -225,7 +362,7 @@
         "h": 9,
         "w": 24,
         "x": 0,
-        "y": 7
+        "y": 11
       },
       "id": 2,
       "options": {
@@ -511,7 +648,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 82
+                "value": 51
               }
             ]
           },
@@ -523,7 +660,7 @@
             "properties": [
               {
                 "id": "custom.width",
-                "value": 75
+                "value": 96
               }
             ]
           }
@@ -533,7 +670,7 @@
         "h": 17,
         "w": 24,
         "x": 0,
-        "y": 16
+        "y": 20
       },
       "id": 1,
       "options": {
@@ -554,7 +691,7 @@
           }
         ]
       },
-      "pluginVersion": "10.1.0",
+      "pluginVersion": "10.2.1",
       "targets": [
         {
           "datasource": {
@@ -597,7 +734,6 @@
   ],
   "refresh": "",
   "schemaVersion": 38,
-  "style": "dark",
   "tags": [],
   "templating": {
     "list": [
@@ -657,6 +793,6 @@
   "timezone": "",
   "title": "stock files",
   "uid": "e1bf725a-7562-40fc-bf75-f138b06da41e",
-  "version": 21,
+  "version": 1,
   "weekStart": ""
 }
