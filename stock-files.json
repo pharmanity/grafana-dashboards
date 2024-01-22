@@ -18,6 +18,7 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
+  "id": 2,
   "links": [],
   "liveNow": false,
   "panels": [
@@ -691,7 +692,7 @@
           }
         ]
       },
-      "pluginVersion": "10.2.1",
+      "pluginVersion": "10.2.3",
       "targets": [
         {
           "datasource": {
@@ -733,7 +734,7 @@
     }
   ],
   "refresh": "",
-  "schemaVersion": 38,
+  "schemaVersion": 39,
   "tags": [],
   "templating": {
     "list": [
@@ -744,16 +745,16 @@
           "value": "$__all"
         },
         "datasource": {
-          "type": "postgres",
-          "uid": "P20B04A4F018B89F3"
+          "type": "grafana-postgresql-datasource",
+          "uid": "P47ACC421B078165A"
         },
-        "definition": "select pharmacies.id as __value, pharmacies.id_v2|| ' - '||pharmacies.name as __text from pharmacies join lgos on lgos.pharmacy_id=pharmacies.id order by pharmacies.name;",
+        "definition": "select pharmacy_lgo.pharmacy_id as __value, pharmacy_lgo.pharmacy_v2_id as __text from pharmacy_lgo order by pharmacy_lgo.pharmacy_v2_id;",
         "hide": 0,
         "includeAll": true,
         "multi": false,
         "name": "pharmacy",
         "options": [],
-        "query": "select pharmacies.id as __value, pharmacies.id_v2|| ' - '||pharmacies.name as __text from pharmacies join lgos on lgos.pharmacy_id=pharmacies.id order by pharmacies.name;",
+        "query": "select pharmacy_lgo.pharmacy_id as __value, pharmacy_lgo.pharmacy_v2_id as __text from pharmacy_lgo order by pharmacy_lgo.pharmacy_v2_id;",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
