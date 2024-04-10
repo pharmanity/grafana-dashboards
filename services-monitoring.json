@@ -1,0 +1,665 @@
+{
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": {
+					"type": "grafana",
+					"uid": "-- Grafana --"
+				},
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": 4,
+	"links": [],
+	"liveNow": false,
+	"panels": [
+		{
+			"collapsed": false,
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 0
+			},
+			"id": 93,
+			"panels": [],
+			"title": "Memory Check",
+			"type": "row"
+		},
+		{
+			"datasource": {
+				"type": "prometheus",
+				"uid": "P187811B30F96DBAD"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"fieldMinMax": true,
+					"mappings": [],
+					"max": 100,
+					"min": 0,
+					"noValue": "0",
+					"thresholds": {
+						"mode": "percentage",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "yellow",
+								"value": 50
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					},
+					"unit": "percent",
+					"unitScale": true
+				},
+				"overrides": []
+			},
+			"gridPos": {
+				"h": 8,
+				"w": 4,
+				"x": 0,
+				"y": 1
+			},
+			"id": 111,
+			"maxPerRow": 6,
+			"options": {
+				"minVizHeight": 75,
+				"minVizWidth": 75,
+				"orientation": "auto",
+				"reduceOptions": {
+					"calcs": ["lastNotNull"],
+					"fields": "/^total$/",
+					"values": true
+				},
+				"showThresholdLabels": true,
+				"showThresholdMarkers": true,
+				"sizing": "auto"
+			},
+			"pluginVersion": "10.3.3",
+			"repeat": "services",
+			"repeatDirection": "h",
+			"targets": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "P187811B30F96DBAD"
+					},
+					"disableTextWrap": false,
+					"editorMode": "code",
+					"exemplar": false,
+					"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}[30s]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\")) \r\n",
+					"fullMetaSearch": false,
+					"includeNullMetadata": true,
+					"instant": true,
+					"legendFormat": "current",
+					"range": false,
+					"refId": "A",
+					"useBackend": false
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "P187811B30F96DBAD"
+					},
+					"editorMode": "code",
+					"exemplar": false,
+					"expr": "sum by (service) (label_replace(container_spec_memory_limit_bytes{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}, \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))",
+					"hide": false,
+					"instant": true,
+					"legendFormat": "max",
+					"range": false,
+					"refId": "B"
+				}
+			],
+			"title": "Memory Usage $services",
+			"transformations": [
+				{
+					"id": "calculateField",
+					"options": {
+						"alias": "percent",
+						"binary": {
+							"left": "current",
+							"operator": "/",
+							"right": "max"
+						},
+						"index": {
+							"asPercentile": true
+						},
+						"mode": "binary",
+						"reduce": {
+							"reducer": "sum"
+						},
+						"replaceFields": true
+					}
+				},
+				{
+					"id": "calculateField",
+					"options": {
+						"alias": "total",
+						"binary": {
+							"left": "percent",
+							"operator": "*",
+							"right": "100"
+						},
+						"mode": "binary",
+						"reduce": {
+							"reducer": "sum"
+						},
+						"replaceFields": true
+					}
+				}
+			],
+			"type": "gauge"
+		},
+		{
+			"collapsed": true,
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 25
+			},
+			"id": 22,
+			"panels": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "P187811B30F96DBAD"
+					},
+					"fieldConfig": {
+						"defaults": {
+							"color": {
+								"mode": "palette-classic"
+							},
+							"custom": {
+								"axisBorderShow": false,
+								"axisCenteredZero": false,
+								"axisColorMode": "text",
+								"axisLabel": "",
+								"axisPlacement": "auto",
+								"barAlignment": 0,
+								"drawStyle": "line",
+								"fillOpacity": 0,
+								"gradientMode": "none",
+								"hideFrom": {
+									"legend": false,
+									"tooltip": false,
+									"viz": false
+								},
+								"insertNulls": false,
+								"lineInterpolation": "linear",
+								"lineWidth": 1,
+								"pointSize": 5,
+								"scaleDistribution": {
+									"type": "linear"
+								},
+								"showPoints": "auto",
+								"spanNulls": false,
+								"stacking": {
+									"group": "A",
+									"mode": "none"
+								},
+								"thresholdsStyle": {
+									"mode": "off"
+								}
+							},
+							"mappings": [],
+							"thresholds": {
+								"mode": "absolute",
+								"steps": [
+									{
+										"color": "green",
+										"value": null
+									},
+									{
+										"color": "red",
+										"value": 80
+									}
+								]
+							},
+							"unit": "bytes",
+							"unitScale": true
+						},
+						"overrides": []
+					},
+					"gridPos": {
+						"h": 8,
+						"w": 4,
+						"x": 0,
+						"y": 2
+					},
+					"id": 4,
+					"maxPerRow": 6,
+					"options": {
+						"legend": {
+							"calcs": [],
+							"displayMode": "list",
+							"placement": "bottom",
+							"showLegend": true
+						},
+						"tooltip": {
+							"mode": "single",
+							"sort": "none"
+						}
+					},
+					"repeat": "services",
+					"repeatDirection": "h",
+					"targets": [
+						{
+							"datasource": {
+								"type": "prometheus",
+								"uid": "P187811B30F96DBAD"
+							},
+							"disableTextWrap": false,
+							"editorMode": "code",
+							"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}[30s]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))\r\n",
+							"fullMetaSearch": false,
+							"includeNullMetadata": true,
+							"instant": false,
+							"legendFormat": "__auto",
+							"range": true,
+							"refId": "A",
+							"useBackend": false
+						}
+					],
+					"title": "Memory Usage $services",
+					"transformations": [],
+					"type": "timeseries"
+				}
+			],
+			"title": "Memory",
+			"type": "row"
+		},
+		{
+			"collapsed": true,
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 26
+			},
+			"id": 40,
+			"panels": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "P187811B30F96DBAD"
+					},
+					"fieldConfig": {
+						"defaults": {
+							"color": {
+								"mode": "palette-classic"
+							},
+							"custom": {
+								"axisBorderShow": false,
+								"axisCenteredZero": false,
+								"axisColorMode": "text",
+								"axisLabel": "",
+								"axisPlacement": "auto",
+								"barAlignment": 0,
+								"drawStyle": "line",
+								"fillOpacity": 0,
+								"gradientMode": "none",
+								"hideFrom": {
+									"legend": false,
+									"tooltip": false,
+									"viz": false
+								},
+								"insertNulls": false,
+								"lineInterpolation": "linear",
+								"lineWidth": 1,
+								"pointSize": 5,
+								"scaleDistribution": {
+									"type": "linear"
+								},
+								"showPoints": "auto",
+								"spanNulls": false,
+								"stacking": {
+									"group": "A",
+									"mode": "none"
+								},
+								"thresholdsStyle": {
+									"mode": "off"
+								}
+							},
+							"mappings": [],
+							"thresholds": {
+								"mode": "absolute",
+								"steps": [
+									{
+										"color": "green",
+										"value": null
+									},
+									{
+										"color": "red",
+										"value": 80
+									}
+								]
+							},
+							"unit": "none",
+							"unitScale": true
+						},
+						"overrides": []
+					},
+					"gridPos": {
+						"h": 8,
+						"w": 4,
+						"x": 0,
+						"y": 2
+					},
+					"id": 58,
+					"maxPerRow": 6,
+					"options": {
+						"legend": {
+							"calcs": [],
+							"displayMode": "list",
+							"placement": "bottom",
+							"showLegend": true
+						},
+						"tooltip": {
+							"mode": "single",
+							"sort": "none"
+						}
+					},
+					"repeat": "services",
+					"repeatDirection": "h",
+					"targets": [
+						{
+							"datasource": {
+								"type": "prometheus",
+								"uid": "P187811B30F96DBAD"
+							},
+							"disableTextWrap": false,
+							"editorMode": "code",
+							"expr": "sum by (service) (label_replace(rate(container_cpu_usage_seconds_total{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}[30s]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))\r\n",
+							"fullMetaSearch": false,
+							"includeNullMetadata": true,
+							"instant": false,
+							"legendFormat": "__auto",
+							"range": true,
+							"refId": "A",
+							"useBackend": false
+						}
+					],
+					"title": "Cpu Usage $services",
+					"transformations": [],
+					"type": "timeseries"
+				}
+			],
+			"title": "Cpu",
+			"type": "row"
+		},
+		{
+			"collapsed": true,
+			"gridPos": {
+				"h": 1,
+				"w": 24,
+				"x": 0,
+				"y": 27
+			},
+			"id": 3,
+			"panels": [
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "P187811B30F96DBAD"
+					},
+					"fieldConfig": {
+						"defaults": {
+							"color": {
+								"mode": "palette-classic"
+							},
+							"custom": {
+								"axisBorderShow": false,
+								"axisCenteredZero": false,
+								"axisColorMode": "text",
+								"axisLabel": "",
+								"axisPlacement": "auto",
+								"barAlignment": 0,
+								"drawStyle": "line",
+								"fillOpacity": 0,
+								"gradientMode": "none",
+								"hideFrom": {
+									"legend": false,
+									"tooltip": false,
+									"viz": false
+								},
+								"insertNulls": false,
+								"lineInterpolation": "linear",
+								"lineWidth": 1,
+								"pointSize": 5,
+								"scaleDistribution": {
+									"type": "linear"
+								},
+								"showPoints": "auto",
+								"spanNulls": false,
+								"stacking": {
+									"group": "A",
+									"mode": "none"
+								},
+								"thresholdsStyle": {
+									"mode": "off"
+								}
+							},
+							"mappings": [],
+							"thresholds": {
+								"mode": "absolute",
+								"steps": [
+									{
+										"color": "green",
+										"value": null
+									},
+									{
+										"color": "red",
+										"value": 80
+									}
+								]
+							},
+							"unit": "bytes",
+							"unitScale": true
+						},
+						"overrides": []
+					},
+					"gridPos": {
+						"h": 10,
+						"w": 24,
+						"x": 0,
+						"y": 43
+					},
+					"id": 2,
+					"options": {
+						"legend": {
+							"calcs": [],
+							"displayMode": "list",
+							"placement": "bottom",
+							"showLegend": true
+						},
+						"tooltip": {
+							"mode": "single",
+							"sort": "none"
+						}
+					},
+					"targets": [
+						{
+							"datasource": {
+								"type": "prometheus",
+								"uid": "P187811B30F96DBAD"
+							},
+							"disableTextWrap": false,
+							"editorMode": "code",
+							"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\"}[30s]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))\r\n",
+							"fullMetaSearch": false,
+							"includeNullMetadata": true,
+							"instant": false,
+							"legendFormat": "__auto",
+							"range": true,
+							"refId": "A",
+							"useBackend": false
+						}
+					],
+					"title": "Memory Usage",
+					"transformations": [],
+					"type": "timeseries"
+				},
+				{
+					"datasource": {
+						"type": "prometheus",
+						"uid": "P187811B30F96DBAD"
+					},
+					"fieldConfig": {
+						"defaults": {
+							"color": {
+								"mode": "palette-classic"
+							},
+							"custom": {
+								"axisBorderShow": false,
+								"axisCenteredZero": false,
+								"axisColorMode": "text",
+								"axisLabel": "",
+								"axisPlacement": "auto",
+								"barAlignment": 0,
+								"drawStyle": "line",
+								"fillOpacity": 0,
+								"gradientMode": "none",
+								"hideFrom": {
+									"legend": false,
+									"tooltip": false,
+									"viz": false
+								},
+								"insertNulls": false,
+								"lineInterpolation": "linear",
+								"lineWidth": 1,
+								"pointSize": 5,
+								"scaleDistribution": {
+									"type": "linear"
+								},
+								"showPoints": "auto",
+								"spanNulls": false,
+								"stacking": {
+									"group": "A",
+									"mode": "none"
+								},
+								"thresholdsStyle": {
+									"mode": "off"
+								}
+							},
+							"mappings": [],
+							"thresholds": {
+								"mode": "absolute",
+								"steps": [
+									{
+										"color": "green",
+										"value": null
+									},
+									{
+										"color": "red",
+										"value": 80
+									}
+								]
+							},
+							"unit": "none",
+							"unitScale": true
+						},
+						"overrides": []
+					},
+					"gridPos": {
+						"h": 9,
+						"w": 24,
+						"x": 0,
+						"y": 53
+					},
+					"id": 1,
+					"options": {
+						"legend": {
+							"calcs": [],
+							"displayMode": "list",
+							"placement": "bottom",
+							"showLegend": true
+						},
+						"tooltip": {
+							"mode": "single",
+							"sort": "none"
+						}
+					},
+					"targets": [
+						{
+							"datasource": {
+								"type": "prometheus",
+								"uid": "P187811B30F96DBAD"
+							},
+							"editorMode": "code",
+							"expr": "sum by (service) (label_replace(rate(container_cpu_usage_seconds_total{namespace=\"application\",container!=\"\"}[1m]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))",
+							"instant": true,
+							"legendFormat": "__auto",
+							"range": true,
+							"refId": "A"
+						}
+					],
+					"title": "CPU Usage",
+					"transformations": [],
+					"type": "timeseries"
+				}
+			],
+			"title": "Global Usage",
+			"type": "row"
+		}
+	],
+	"refresh": "1m",
+	"schemaVersion": 39,
+	"tags": [],
+	"templating": {
+		"list": [
+			{
+				"current": {
+					"selected": true,
+					"text": ["All"],
+					"value": ["$__all"]
+				},
+				"definition": "label_values(container_memory_usage_bytes{namespace=\"application\"},pod)",
+				"hide": 0,
+				"includeAll": true,
+				"multi": true,
+				"name": "services",
+				"options": [],
+				"query": {
+					"qryType": 1,
+					"query": "label_values(container_memory_usage_bytes{namespace=\"application\"},pod)",
+					"refId": "PrometheusVariableQueryEditor-VariableQuery"
+				},
+				"refresh": 1,
+				"regex": "^([^0-9]*)-(.*)",
+				"skipUrlSync": false,
+				"sort": 1,
+				"type": "query"
+			}
+		]
+	},
+	"time": {
+		"from": "now-24h",
+		"to": "now"
+	},
+	"timepicker": {},
+	"timezone": "",
+	"title": "Services Monitoring",
+	"uid": "e12d651f-7fd9-40d6-8cf4-3641bf56c1a9",
+	"version": 18,
+	"weekStart": ""
+}

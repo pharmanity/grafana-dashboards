@@ -1,0 +1,146 @@
+{
+	"apiVersion": 1,
+	"groups": [
+		{
+			"orgId": 1,
+			"name": "V3",
+			"folder": "V3",
+			"interval": "1m",
+			"rules": [
+				{
+					"uid": "ebfa095c-ea1c-4709-8691-a96d21d8617a",
+					"title": "Ram Usage Over 80%",
+					"condition": "A",
+					"data": [
+						{
+							"refId": "CURRENT",
+							"relativeTimeRange": {
+								"from": 600,
+								"to": 0
+							},
+							"datasourceUid": "P187811B30F96DBAD",
+							"model": {
+								"editorMode": "code",
+								"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\"}[30s]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\")) \r\n",
+								"instant": true,
+								"intervalMs": 1000,
+								"legendFormat": "__auto",
+								"maxDataPoints": 43200,
+								"range": false,
+								"refId": "CURRENT"
+							}
+						},
+						{
+							"refId": "MAX",
+							"relativeTimeRange": {
+								"from": 600,
+								"to": 0
+							},
+							"datasourceUid": "P187811B30F96DBAD",
+							"model": {
+								"datasource": {
+									"type": "prometheus",
+									"uid": "P187811B30F96DBAD"
+								},
+								"editorMode": "code",
+								"expr": "sum by (service) (label_replace(container_spec_memory_limit_bytes{namespace=\"application\",container!=\"\"}, \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))",
+								"instant": true,
+								"intervalMs": 1000,
+								"legendFormat": "__auto",
+								"maxDataPoints": 43200,
+								"range": false,
+								"refId": "MAX"
+							}
+						},
+						{
+							"refId": "PERCENT",
+							"relativeTimeRange": {
+								"from": 600,
+								"to": 0
+							},
+							"datasourceUid": "__expr__",
+							"model": {
+								"conditions": [
+									{
+										"evaluator": {
+											"params": [0, 0],
+											"type": "gt"
+										},
+										"operator": {
+											"type": "and"
+										},
+										"query": {
+											"params": []
+										},
+										"reducer": {
+											"params": [],
+											"type": "avg"
+										},
+										"type": "query"
+									}
+								],
+								"datasource": {
+									"name": "Expression",
+									"type": "__expr__",
+									"uid": "__expr__"
+								},
+								"expression": "(${CURRENT}/${MAX})*100",
+								"intervalMs": 1000,
+								"maxDataPoints": 43200,
+								"refId": "PERCENT",
+								"type": "math"
+							}
+						},
+						{
+							"refId": "A",
+							"relativeTimeRange": {
+								"from": 0,
+								"to": 0
+							},
+							"datasourceUid": "__expr__",
+							"model": {
+								"conditions": [
+									{
+										"evaluator": {
+											"params": [80, 0],
+											"type": "gt"
+										},
+										"operator": {
+											"type": "and"
+										},
+										"query": {
+											"params": []
+										},
+										"reducer": {
+											"params": [],
+											"type": "avg"
+										},
+										"type": "query"
+									}
+								],
+								"datasource": {
+									"name": "Expression",
+									"type": "__expr__",
+									"uid": "__expr__"
+								},
+								"expression": "PERCENT",
+								"intervalMs": 1000,
+								"maxDataPoints": 43200,
+								"refId": "A",
+								"type": "threshold"
+							}
+						}
+					],
+					"noDataState": "NoData",
+					"execErrState": "Error",
+					"for": "3m",
+					"annotations": {
+						"summary": "A service is over 80% ram usage"
+					},
+					"labels": {},
+					"isPaused": false
+				}
+			]
+		}
+	]
+}

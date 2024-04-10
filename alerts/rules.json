@@ -1,0 +1,28 @@
+{
+	"template_files": {},
+	"template_file_provenances": {},
+	"alertmanager_config": {
+		"route": {
+			"receiver": "Teams",
+			"group_by": ["grafana_folder", "alertname"]
+		},
+		"templates": null,
+		"receivers": [
+			{
+				"name": "Teams",
+				"grafana_managed_receiver_configs": [
+					{
+						"uid": "aab7f829-b5e9-460f-8fc7-2b2a31cd9894",
+						"name": "Teams",
+						"type": "teams",
+						"disableResolveMessage": false,
+						"settings": {
+							"url": ""
+						},
+						"secureFields": {}
+					}
+				]
+			}
+		]
+	}
+}
