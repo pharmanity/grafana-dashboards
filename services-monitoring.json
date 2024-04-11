@@ -633,6 +633,10 @@
 					"text": ["All"],
 					"value": ["$__all"]
 				},
+				"datasource": {
+					"type": "prometheus",
+					"uid": "P187811B30F96DBAD"
+				},
 				"definition": "label_values(container_memory_usage_bytes{namespace=\"application\"},pod)",
 				"hide": 0,
 				"includeAll": true,
