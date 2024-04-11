@@ -1,0 +1,19 @@
+{
+	"apiVersion": 1,
+	"contactPoints": [
+		{
+			"orgId": 1,
+			"name": "Teams",
+			"receivers": [
+				{
+					"uid": "aab7f829-b5e9-460f-8fc7-2b2a31cd9894",
+					"type": "teams",
+					"settings": {
+						"url": "${WEBHOOK_URL}"
+					},
+					"disableResolveMessage": false
+				}
+			]
+		}
+	]
+}
