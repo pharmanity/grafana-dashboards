@@ -105,7 +105,7 @@
 					"disableTextWrap": false,
 					"editorMode": "code",
 					"exemplar": false,
-					"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}[30s]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\")) \r\n",
+					"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}[30s]), \"service\", \"$1\", \"pod\", \"^(.*)-(.*)\")) \r\n",
 					"fullMetaSearch": false,
 					"includeNullMetadata": true,
 					"instant": true,
@@ -121,7 +121,7 @@
 					},
 					"editorMode": "code",
 					"exemplar": false,
-					"expr": "sum by (service) (label_replace(container_spec_memory_limit_bytes{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}, \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))",
+					"expr": "sum by (service) (label_replace(container_spec_memory_limit_bytes{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}, \"service\", \"$1\", \"pod\", \"^(.*)-(.*)\"))",
 					"hide": false,
 					"instant": true,
 					"legendFormat": "max",
@@ -270,7 +270,7 @@
 							},
 							"disableTextWrap": false,
 							"editorMode": "code",
-							"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}[30s]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))\r\n",
+							"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}[30s]), \"service\", \"$1\", \"pod\", \"^(.*)-(.*)\"))\r\n",
 							"fullMetaSearch": false,
 							"includeNullMetadata": true,
 							"instant": false,
@@ -389,7 +389,7 @@
 							},
 							"disableTextWrap": false,
 							"editorMode": "code",
-							"expr": "sum by (service) (label_replace(rate(container_cpu_usage_seconds_total{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}[30s]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))\r\n",
+							"expr": "sum by (service) (label_replace(rate(container_cpu_usage_seconds_total{namespace=\"application\",container!=\"\",pod=~\"^$services.*\"}[30s]), \"service\", \"$1\", \"pod\", \"^(.*)-(.*)\"))\r\n",
 							"fullMetaSearch": false,
 							"includeNullMetadata": true,
 							"instant": false,
@@ -505,7 +505,7 @@
 							},
 							"disableTextWrap": false,
 							"editorMode": "code",
-							"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\"}[30s]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))\r\n",
+							"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\"}[30s]), \"service\", \"$1\", \"pod\", \"^(.*)-(.*)\"))\r\n",
 							"fullMetaSearch": false,
 							"includeNullMetadata": true,
 							"instant": false,
@@ -606,7 +606,7 @@
 								"uid": "P187811B30F96DBAD"
 							},
 							"editorMode": "code",
-							"expr": "sum by (service) (label_replace(rate(container_cpu_usage_seconds_total{namespace=\"application\",container!=\"\"}[1m]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))",
+							"expr": "sum by (service) (label_replace(rate(container_cpu_usage_seconds_total{namespace=\"application\",container!=\"\"}[1m]), \"service\", \"$1\", \"pod\", \"^(.*)-(.*)\"))",
 							"instant": true,
 							"legendFormat": "__auto",
 							"range": true,
@@ -633,6 +633,10 @@
 					"text": ["All"],
 					"value": ["$__all"]
 				},
+				"datasource": {
+					"type": "prometheus",
+					"uid": "P187811B30F96DBAD"
+				},
 				"definition": "label_values(container_memory_usage_bytes{namespace=\"application\"},pod)",
 				"hide": 0,
 				"includeAll": true,
@@ -645,7 +649,7 @@
 					"refId": "PrometheusVariableQueryEditor-VariableQuery"
 				},
 				"refresh": 1,
-				"regex": "^([^0-9]*)-(.*)",
+				"regex": "^(.*)-(.*)",
 				"skipUrlSync": false,
 				"sort": 1,
 				"type": "query"

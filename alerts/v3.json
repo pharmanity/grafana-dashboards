@@ -21,7 +21,7 @@
 							"datasourceUid": "P187811B30F96DBAD",
 							"model": {
 								"editorMode": "code",
-								"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\"}[30s]), \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\")) \r\n",
+								"expr": "sum by (service) (label_replace(avg_over_time(container_memory_usage_bytes{namespace=\"application\",container!=\"\"}[30s]), \"service\", \"$1\", \"pod\", \"^(.*)-(.*)\")) \r\n",
 								"instant": true,
 								"intervalMs": 1000,
 								"legendFormat": "__auto",
@@ -43,7 +43,7 @@
 									"uid": "P187811B30F96DBAD"
 								},
 								"editorMode": "code",
-								"expr": "sum by (service) (label_replace(container_spec_memory_limit_bytes{namespace=\"application\",container!=\"\"}, \"service\", \"$1\", \"pod\", \"^([^0-9]*)-(.*)\"))",
+								"expr": "sum by (service) (label_replace(container_spec_memory_limit_bytes{namespace=\"application\",container!=\"\"}, \"service\", \"$1\", \"pod\", \"^(.*)-(.*)\"))",
 								"instant": true,
 								"intervalMs": 1000,
 								"legendFormat": "__auto",
