@@ -9,7 +9,7 @@
 			"rules": [
 				{
 					"uid": "ebfa095c-ea1c-4709-8691-a96d21d8617a",
-					"title": "Ram Usage Over 80%",
+					"title": "Ram Usage Over 80% ${ENV}",
 					"condition": "A",
 					"data": [
 						{
