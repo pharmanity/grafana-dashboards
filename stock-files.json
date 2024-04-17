@@ -66,7 +66,7 @@
 									{
 										"targetBlank": true,
 										"title": "",
-										"url": "https://{{V2_URL}}/backoffice/admin/pharmacies/${__data.fields.pharmacy_v2_id}"
+										"url": "https://${V2_URL}/backoffice/admin/pharmacies/${__data.fields.pharmacy_v2_id}"
 									}
 								]
 							}
