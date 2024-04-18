@@ -66,7 +66,7 @@
 									{
 										"targetBlank": true,
 										"title": "",
-										"url": "https://${V2_URL}/backoffice/admin/pharmacies/${__data.fields.pharmacy_v2_id}"
+										"url": "https://${v2_url}/backoffice/admin/pharmacies/${__data.fields.pharmacy_v2_id}"
 									}
 								]
 							}
@@ -879,6 +879,29 @@
 				"name": "lgo",
 				"options": [],
 				"query": "select lgo_name from pharmacy_lgo group by lgo_name",
+				"refresh": 1,
+				"regex": "",
+				"skipUrlSync": false,
+				"sort": 0,
+				"type": "query"
+			},
+			{
+				"current": {
+					"selected": false,
+					"text": "v2-front.staging-pharmanity.com",
+					"value": "v2-front.staging-pharmanity.com"
+				},
+				"datasource": {
+					"type": "volkovlabs-env-datasource",
+					"uid": "P9E471951A1B4106E"
+				},
+				"definition": "V2_URL",
+				"hide": 0,
+				"includeAll": false,
+				"multi": false,
+				"name": "v2_url",
+				"options": [],
+				"query": "V2_URL",
 				"refresh": 1,
 				"regex": "",
 				"skipUrlSync": false,
