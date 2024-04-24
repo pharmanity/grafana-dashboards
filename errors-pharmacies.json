@@ -1,0 +1,190 @@
+{
+	"annotations": {
+		"list": [
+			{
+				"builtIn": 1,
+				"datasource": {
+					"type": "grafana",
+					"uid": "-- Grafana --"
+				},
+				"enable": true,
+				"hide": true,
+				"iconColor": "rgba(0, 211, 255, 1)",
+				"name": "Annotations & Alerts",
+				"type": "dashboard"
+			}
+		]
+	},
+	"editable": true,
+	"fiscalYearStartMonth": 0,
+	"graphTooltip": 0,
+	"id": 6,
+	"links": [],
+	"panels": [
+		{
+			"datasource": {
+				"type": "mysql",
+				"uid": "P36913DBAE2373331"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"align": "auto",
+						"cellOptions": {
+							"type": "auto"
+						},
+						"filterable": true,
+						"inspect": false
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "id"
+						},
+						"properties": [
+							{
+								"id": "custom.width",
+								"value": 95
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "name"
+						},
+						"properties": [
+							{
+								"id": "custom.width",
+								"value": 122
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "error_message"
+						},
+						"properties": [
+							{
+								"id": "custom.width"
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "raison_sociale"
+						},
+						"properties": [
+							{
+								"id": "custom.width",
+								"value": 342
+							}
+						]
+					},
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "lgo_name"
+						},
+						"properties": [
+							{
+								"id": "custom.width",
+								"value": 166
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 17,
+				"w": 24,
+				"x": 0,
+				"y": 0
+			},
+			"id": 1,
+			"options": {
+				"cellHeight": "md",
+				"footer": {
+					"countRows": false,
+					"enablePagination": true,
+					"fields": "",
+					"reducer": ["sum"],
+					"show": false
+				},
+				"showHeader": true,
+				"sortBy": []
+			},
+			"pluginVersion": "10.4.2",
+			"targets": [
+				{
+					"dataset": "pharmanity_staging",
+					"datasource": {
+						"type": "mysql",
+						"uid": "P36913DBAE2373331"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "select p.id, p.raison_sociale,l.name as lgo_name,pe.error_message    from \r\n    pharmacie_error pe \r\n        join pharmacie p on p.id=pe.pharmacie_id \r\n        join user_lgo ul on ul.id=p.user_lgo_id \r\n        join lgo l on l.id=ul.lgo_id \r\nwhere pe.error_message not like '%404%' and p.actif = 1\r\ngroup by pharmacie_id",
+					"refId": "A",
+					"sql": {
+						"columns": [
+							{
+								"parameters": [],
+								"type": "function"
+							}
+						],
+						"groupBy": [
+							{
+								"property": {
+									"type": "string"
+								},
+								"type": "groupBy"
+							}
+						],
+						"limit": 50
+					}
+				}
+			],
+			"title": "Erreurs Pharmacies",
+			"type": "table"
+		}
+	],
+	"refresh": "5m",
+	"schemaVersion": 39,
+	"tags": [],
+	"templating": {
+		"list": []
+	},
+	"time": {
+		"from": "now-24h",
+		"to": "now"
+	},
+	"timepicker": {},
+	"timezone": "browser",
+	"title": "Erreurs Pharmacies",
+	"uid": "bdjp73tytrjeof",
+	"version": 1,
+	"weekStart": ""
+}
