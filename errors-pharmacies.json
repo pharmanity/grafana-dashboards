@@ -23,6 +23,110 @@
 	"panels": [
 		{
 			"datasource": {
+				"type": "grafana-postgresql-datasource",
+				"uid": "P47ACC421B078165A"
+			},
+			"fieldConfig": {
+				"defaults": {
+					"color": {
+						"mode": "thresholds"
+					},
+					"custom": {
+						"align": "auto",
+						"cellOptions": {
+							"type": "auto"
+						},
+						"inspect": false
+					},
+					"mappings": [],
+					"thresholds": {
+						"mode": "absolute",
+						"steps": [
+							{
+								"color": "green",
+								"value": null
+							},
+							{
+								"color": "red",
+								"value": 80
+							}
+						]
+					}
+				},
+				"overrides": [
+					{
+						"matcher": {
+							"id": "byName",
+							"options": "pharmacy_v2_id"
+						},
+						"properties": [
+							{
+								"id": "links",
+								"value": [
+									{
+										"targetBlank": true,
+										"title": "",
+										"url": "https://${v2_url}/backoffice/admin/pharmacies/${__data.fields.pharmacy_v2_id}"
+									}
+								]
+							}
+						]
+					}
+				]
+			},
+			"gridPos": {
+				"h": 6,
+				"w": 24,
+				"x": 0,
+				"y": 0
+			},
+			"id": 2,
+			"options": {
+				"cellHeight": "sm",
+				"footer": {
+					"countRows": false,
+					"fields": "",
+					"reducer": ["sum"],
+					"show": false
+				},
+				"showHeader": true
+			},
+			"pluginVersion": "10.4.2",
+			"targets": [
+				{
+					"datasource": {
+						"type": "grafana-postgresql-datasource",
+						"uid": "P47ACC421B078165A"
+					},
+					"editorMode": "code",
+					"format": "table",
+					"rawQuery": true,
+					"rawSql": "SELECT pharmacy_id,stock_updated_at,pharmacy_v2_id\r\nFROM pharmacy_lgo\r\nGROUP BY pharmacy_id\r\nHAVING MAX(stock_updated_at) < NOW() - INTERVAL '4 days'\r\nORDER BY stock_updated_at ASC;",
+					"refId": "A",
+					"sql": {
+						"columns": [
+							{
+								"parameters": [],
+								"type": "function"
+							}
+						],
+						"groupBy": [
+							{
+								"property": {
+									"type": "string"
+								},
+								"type": "groupBy"
+							}
+						],
+						"limit": 50
+					}
+				}
+			],
+			"title": "Panel Title",
+			"type": "table"
+		},
+		{
+			"datasource": {
 				"type": "mysql",
 				"uid": "P36913DBAE2373331"
 			},
@@ -108,7 +212,7 @@
 						"properties": [
 							{
 								"id": "custom.width",
-								"value": 342
+								"value": 222
 							}
 						]
 					},
@@ -130,7 +234,7 @@
 				"h": 17,
 				"w": 24,
 				"x": 0,
-				"y": 0
+				"y": 6
 			},
 			"id": 1,
 			"options": {
@@ -156,7 +260,7 @@
 					"editorMode": "code",
 					"format": "table",
 					"rawQuery": true,
-					"rawSql": "select p.id, p.raison_sociale,l.name as lgo_name,pe.error_message    from \r\n    pharmacie_error pe \r\n        join pharmacie p on p.id=pe.pharmacie_id \r\n        join user_lgo ul on ul.id=p.user_lgo_id \r\n        join lgo l on l.id=ul.lgo_id \r\nwhere pe.error_message not like '%404%' and p.actif = 1\r\ngroup by pharmacie_id",
+					"rawSql": "select p.id, p.raison_sociale,l.name as lgo_name,pe.error_message    from \r\n    pharmacie_error pe \r\n        join pharmacie p on p.id=pe.pharmacie_id \r\n        join user_lgo ul on ul.id=p.user_lgo_id \r\n        join lgo l on l.id=ul.lgo_id \r\nwhere  p.actif = 1\r\ngroup by pharmacie_id",
 					"refId": "A",
 					"sql": {
 						"columns": [
@@ -219,6 +323,6 @@
 	"timezone": "browser",
 	"title": "Erreurs Pharmacies",
 	"uid": "bdjp73tytrjeof",
-	"version": 3,
+	"version": 6,
 	"weekStart": ""
 }

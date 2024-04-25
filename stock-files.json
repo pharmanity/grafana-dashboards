@@ -23,246 +23,6 @@
 	"panels": [
 		{
 			"datasource": {
-				"type": "grafana-postgresql-datasource",
-				"uid": "P47ACC421B078165A"
-			},
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "thresholds"
-					},
-					"custom": {
-						"align": "auto",
-						"cellOptions": {
-							"type": "auto"
-						},
-						"inspect": false
-					},
-					"mappings": [],
-					"thresholds": {
-						"mode": "absolute",
-						"steps": [
-							{
-								"color": "green",
-								"value": null
-							},
-							{
-								"color": "red",
-								"value": 80
-							}
-						]
-					}
-				},
-				"overrides": [
-					{
-						"matcher": {
-							"id": "byName",
-							"options": "pharmacy_v2_id"
-						},
-						"properties": [
-							{
-								"id": "links",
-								"value": [
-									{
-										"targetBlank": true,
-										"title": "",
-										"url": "https://${v2_url}/backoffice/admin/pharmacies/${__data.fields.pharmacy_v2_id}"
-									}
-								]
-							}
-						]
-					}
-				]
-			},
-			"gridPos": {
-				"h": 6,
-				"w": 24,
-				"x": 0,
-				"y": 0
-			},
-			"id": 5,
-			"options": {
-				"cellHeight": "sm",
-				"footer": {
-					"countRows": false,
-					"fields": "",
-					"reducer": ["sum"],
-					"show": false
-				},
-				"showHeader": true
-			},
-			"pluginVersion": "10.4.2",
-			"targets": [
-				{
-					"datasource": {
-						"type": "grafana-postgresql-datasource",
-						"uid": "P47ACC421B078165A"
-					},
-					"editorMode": "code",
-					"format": "table",
-					"rawQuery": true,
-					"rawSql": "SELECT pharmacy_id,stock_updated_at,pharmacy_v2_id\r\nFROM pharmacy_lgo\r\nGROUP BY pharmacy_id\r\nHAVING MAX(stock_updated_at) < NOW() - INTERVAL '4 days'\r\nORDER BY stock_updated_at ASC;",
-					"refId": "A",
-					"sql": {
-						"columns": [
-							{
-								"parameters": [],
-								"type": "function"
-							}
-						],
-						"groupBy": [
-							{
-								"property": {
-									"type": "string"
-								},
-								"type": "groupBy"
-							}
-						],
-						"limit": 50
-					}
-				}
-			],
-			"title": "Panel Title",
-			"type": "table"
-		},
-		{
-			"datasource": {
-				"type": "prometheus",
-				"uid": "P187811B30F96DBAD"
-			},
-			"description": "",
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "palette-classic"
-					},
-					"custom": {
-						"axisBorderShow": false,
-						"axisCenteredZero": false,
-						"axisColorMode": "text",
-						"axisLabel": "",
-						"axisPlacement": "auto",
-						"barAlignment": 0,
-						"drawStyle": "line",
-						"fillOpacity": 0,
-						"gradientMode": "none",
-						"hideFrom": {
-							"legend": false,
-							"tooltip": false,
-							"viz": false
-						},
-						"insertNulls": false,
-						"lineInterpolation": "linear",
-						"lineWidth": 1,
-						"pointSize": 5,
-						"scaleDistribution": {
-							"type": "linear"
-						},
-						"showPoints": "auto",
-						"spanNulls": false,
-						"stacking": {
-							"group": "A",
-							"mode": "none"
-						},
-						"thresholdsStyle": {
-							"mode": "off"
-						}
-					},
-					"mappings": [],
-					"thresholds": {
-						"mode": "absolute",
-						"steps": [
-							{
-								"color": "green",
-								"value": null
-							},
-							{
-								"color": "red",
-								"value": 80
-							}
-						]
-					},
-					"unit": "s"
-				},
-				"overrides": []
-			},
-			"gridPos": {
-				"h": 6,
-				"w": 24,
-				"x": 0,
-				"y": 6
-			},
-			"id": 4,
-			"options": {
-				"legend": {
-					"calcs": [],
-					"displayMode": "list",
-					"placement": "bottom",
-					"showLegend": true
-				},
-				"tooltip": {
-					"mode": "single",
-					"sort": "none"
-				}
-			},
-			"targets": [
-				{
-					"datasource": {
-						"type": "prometheus",
-						"uid": "P187811B30F96DBAD"
-					},
-					"disableTextWrap": false,
-					"editorMode": "builder",
-					"expr": "pharmanity_stock_v1_latency_seconds",
-					"fullMetaSearch": false,
-					"includeNullMetadata": true,
-					"instant": false,
-					"interval": "",
-					"legendFormat": "{{__name__}}",
-					"range": true,
-					"refId": "A",
-					"useBackend": false
-				},
-				{
-					"datasource": {
-						"type": "prometheus",
-						"uid": "P187811B30F96DBAD"
-					},
-					"disableTextWrap": false,
-					"editorMode": "builder",
-					"expr": "pharmanity_stock_v2_latency_seconds",
-					"fullMetaSearch": false,
-					"hide": false,
-					"includeNullMetadata": true,
-					"instant": false,
-					"legendFormat": "{{__name__}}",
-					"range": true,
-					"refId": "B",
-					"useBackend": false
-				},
-				{
-					"datasource": {
-						"type": "prometheus",
-						"uid": "P187811B30F96DBAD"
-					},
-					"disableTextWrap": false,
-					"editorMode": "builder",
-					"expr": "pharmanity_stock_file_v2_latency_seconds",
-					"fullMetaSearch": false,
-					"hide": false,
-					"includeNullMetadata": true,
-					"instant": false,
-					"legendFormat": "{{__name__}}",
-					"range": true,
-					"refId": "C",
-					"useBackend": false
-				}
-			],
-			"title": "Latence",
-			"type": "timeseries"
-		},
-		{
-			"datasource": {
 				"type": "postgres",
 				"uid": "P47ACC421B078165A"
 			},
@@ -325,7 +85,7 @@
 				"h": 5,
 				"w": 24,
 				"x": 0,
-				"y": 12
+				"y": 0
 			},
 			"id": 3,
 			"options": {
@@ -466,7 +226,7 @@
 				"h": 9,
 				"w": 24,
 				"x": 0,
-				"y": 17
+				"y": 5
 			},
 			"id": 2,
 			"options": {
@@ -774,7 +534,7 @@
 				"h": 17,
 				"w": 24,
 				"x": 0,
-				"y": 26
+				"y": 14
 			},
 			"id": 1,
 			"options": {
