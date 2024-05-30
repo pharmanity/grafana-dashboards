@@ -139,7 +139,114 @@
 					},
 					"labels": {},
 					"isPaused": false
-				}
+				},
+				{
+                    "uid": "ddj3zyfnvery8c",
+                    "title": "Missing Stocks",
+                    "condition": "B",
+                    "data": [
+                        {
+                            "refId": "A",
+                            "relativeTimeRange": {
+                                "from": 604800,
+                                "to": 345600
+                            },
+                            "datasourceUid": "P47ACC421B078165A",
+                            "model": {
+                                "datasource": {
+                                    "type": "grafana-postgresql-datasource",
+                                    "uid": "P47ACC421B078165A"
+                                },
+                                "editorMode": "code",
+                                "format": "table",
+                                "intervalMs": 60000,
+                                "maxDataPoints": 43200,
+                                "rawQuery": true,
+                                "rawSql": "SELECT \r\n    pharmacy_v2_id, \r\n    stock_updated_at\r\nFROM pharmacy_lgo\r\n    where \r\n        $__timeFilter(stock_updated_at)\r\n        and stock_updated_at > created_at + INTERVAL '1 days';",
+                                "refId": "A",
+                                "sql": {
+                                    "columns": [
+                                        {
+                                            "parameters": [],
+                                            "type": "function"
+                                        }
+                                    ],
+                                    "groupBy": [
+                                        {
+                                            "property": {
+                                                "type": "string"
+                                            },
+                                            "type": "groupBy"
+                                        }
+                                    ],
+                                    "limit": 50
+                                }
+                            }
+                        },
+                        {
+                            "refId": "B",
+                            "relativeTimeRange": {
+                                "from": 604800,
+                                "to": 345600
+                            },
+                            "datasourceUid": "__expr__",
+                            "model": {
+                                "conditions": [
+                                    {
+                                        "evaluator": {
+                                            "params": [
+                                                0,
+                                                0
+                                            ],
+                                            "type": "gt"
+                                        },
+                                        "operator": {
+                                            "type": "and"
+                                        },
+                                        "query": {
+                                            "params": []
+                                        },
+                                        "reducer": {
+                                            "params": [],
+                                            "type": "avg"
+                                        },
+                                        "type": "query"
+                                    }
+                                ],
+                                "datasource": {
+                                    "name": "Expression",
+                                    "type": "__expr__",
+                                    "uid": "__expr__"
+                                },
+                                "expression": "A",
+                                "intervalMs": 1000,
+                                "maxDataPoints": 43200,
+                                "reducer": "last",
+                                "refId": "B",
+                                "settings": {
+                                    "mode": ""
+                                },
+                                "type": "reduce"
+                            }
+                        }
+                    ],
+                    "dasboardUid": "bdjp73tytrjeof",
+                    "panelId": 1,
+                    "noDataState": "OK",
+                    "execErrState": "Error",
+                    "for": "0s",
+                    "annotations": {
+                        "__dashboardUid__": "bdjp73tytrjeof",
+                        "__panelId__": "1",
+                        "description": "",
+                        "runbook_url": "",
+                        "summary": "Pharmacie qui n'a pas reçu de stock depuis 4 jours\n\n[voir la pharmacie](https://secure.pharmanity.com/backoffice/admin/pharmacies/{{ index $values \"B\" }})\n\nphID: {{ index $values \"B\" }}"
+                    },
+                    "labels": {
+                        "": ""
+                    },
+                    "isPaused": false
+                }
 			]
 		}
 	]
