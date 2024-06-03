@@ -4,7 +4,8 @@
 		{
 			"orgId": 1,
 			"receiver": "Teams",
-			"group_by": ["grafana_folder", "alertname"]
+			"group_by": ["grafana_folder", "alertname"],
+			"repeat_interval": "720h"
 		}
 	]
 }
