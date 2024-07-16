@@ -1,328 +1,297 @@
 {
-	"annotations": {
-		"list": [
-			{
-				"builtIn": 1,
-				"datasource": {
-					"type": "grafana",
-					"uid": "-- Grafana --"
-				},
-				"enable": true,
-				"hide": true,
-				"iconColor": "rgba(0, 211, 255, 1)",
-				"name": "Annotations & Alerts",
-				"type": "dashboard"
-			}
-		]
-	},
-	"editable": true,
-	"fiscalYearStartMonth": 0,
-	"graphTooltip": 0,
-	"id": 6,
-	"links": [],
-	"panels": [
-		{
-			"datasource": {
-				"type": "grafana-postgresql-datasource",
-				"uid": "P47ACC421B078165A"
-			},
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "thresholds"
-					},
-					"custom": {
-						"align": "auto",
-						"cellOptions": {
-							"type": "auto"
-						},
-						"inspect": false
-					},
-					"mappings": [],
-					"thresholds": {
-						"mode": "absolute",
-						"steps": [
-							{
-								"color": "green",
-								"value": null
-							},
-							{
-								"color": "red",
-								"value": 80
-							}
-						]
-					}
-				},
-				"overrides": [
-					{
-						"matcher": {
-							"id": "byName",
-							"options": "pharmacy_v2_id"
-						},
-						"properties": [
-							{
-								"id": "links",
-								"value": [
-									{
-										"targetBlank": true,
-										"title": "",
-										"url": "https://${v2_url}/backoffice/admin/pharmacies/${__data.fields.pharmacy_v2_id}"
-									}
-								]
-							}
-						]
-					}
-				]
-			},
-			"gridPos": {
-				"h": 6,
-				"w": 24,
-				"x": 0,
-				"y": 0
-			},
-			"id": 2,
-			"options": {
-				"cellHeight": "sm",
-				"footer": {
-					"countRows": false,
-					"fields": "",
-					"reducer": ["sum"],
-					"show": false
-				},
-				"showHeader": true
-			},
-			"pluginVersion": "10.4.2",
-			"targets": [
-				{
-					"datasource": {
-						"type": "grafana-postgresql-datasource",
-						"uid": "P47ACC421B078165A"
-					},
-					"editorMode": "code",
-					"format": "table",
-					"rawQuery": true,
-					"rawSql": "SELECT pharmacy_id,stock_updated_at,pharmacy_v2_id\r\nFROM pharmacy_lgo\r\nGROUP BY pharmacy_id\r\nHAVING MAX(stock_updated_at) < NOW() - INTERVAL '4 days'\r\nORDER BY stock_updated_at ASC;",
-					"refId": "A",
-					"sql": {
-						"columns": [
-							{
-								"parameters": [],
-								"type": "function"
-							}
-						],
-						"groupBy": [
-							{
-								"property": {
-									"type": "string"
-								},
-								"type": "groupBy"
-							}
-						],
-						"limit": 50
-					}
-				}
-			],
-			"title": "Pharmacies avec retard de stock",
-			"type": "table"
-		},
-		{
-			"datasource": {
-				"type": "mysql",
-				"uid": "P36913DBAE2373331"
-			},
-			"fieldConfig": {
-				"defaults": {
-					"color": {
-						"mode": "thresholds"
-					},
-					"custom": {
-						"align": "auto",
-						"cellOptions": {
-							"type": "auto"
-						},
-						"filterable": true,
-						"inspect": false
-					},
-					"mappings": [],
-					"thresholds": {
-						"mode": "absolute",
-						"steps": [
-							{
-								"color": "green",
-								"value": null
-							},
-							{
-								"color": "red",
-								"value": 80
-							}
-						]
-					}
-				},
-				"overrides": [
-					{
-						"matcher": {
-							"id": "byName",
-							"options": "id"
-						},
-						"properties": [
-							{
-								"id": "custom.width",
-								"value": 95
-							},
-							{
-								"id": "links",
-								"value": [
-									{
-										"targetBlank": true,
-										"title": "",
-										"url": "https://${v2_url}/backoffice/admin/pharmacies/${__data.fields.id}"
-									}
-								]
-							}
-						]
-					},
-					{
-						"matcher": {
-							"id": "byName",
-							"options": "name"
-						},
-						"properties": [
-							{
-								"id": "custom.width",
-								"value": 122
-							}
-						]
-					},
-					{
-						"matcher": {
-							"id": "byName",
-							"options": "error_message"
-						},
-						"properties": [
-							{
-								"id": "custom.width"
-							}
-						]
-					},
-					{
-						"matcher": {
-							"id": "byName",
-							"options": "raison_sociale"
-						},
-						"properties": [
-							{
-								"id": "custom.width",
-								"value": 222
-							}
-						]
-					},
-					{
-						"matcher": {
-							"id": "byName",
-							"options": "lgo_name"
-						},
-						"properties": [
-							{
-								"id": "custom.width",
-								"value": 166
-							}
-						]
-					}
-				]
-			},
-			"gridPos": {
-				"h": 17,
-				"w": 24,
-				"x": 0,
-				"y": 6
-			},
-			"id": 1,
-			"options": {
-				"cellHeight": "md",
-				"footer": {
-					"countRows": false,
-					"enablePagination": true,
-					"fields": "",
-					"reducer": ["sum"],
-					"show": false
-				},
-				"showHeader": true,
-				"sortBy": []
-			},
-			"pluginVersion": "10.4.2",
-			"targets": [
-				{
-					"dataset": "pharmanity_staging",
-					"datasource": {
-						"type": "mysql",
-						"uid": "P36913DBAE2373331"
-					},
-					"editorMode": "code",
-					"format": "table",
-					"rawQuery": true,
-					"rawSql": "select p.id, p.raison_sociale,l.name as lgo_name,pe.error_message    from \r\n    pharmacie_error pe \r\n        join pharmacie p on p.id=pe.pharmacie_id \r\n        join user_lgo ul on ul.id=p.user_lgo_id \r\n        join lgo l on l.id=ul.lgo_id \r\nwhere  p.actif = 1\r\ngroup by pharmacie_id",
-					"refId": "A",
-					"sql": {
-						"columns": [
-							{
-								"parameters": [],
-								"type": "function"
-							}
-						],
-						"groupBy": [
-							{
-								"property": {
-									"type": "string"
-								},
-								"type": "groupBy"
-							}
-						],
-						"limit": 50
-					}
-				}
-			],
-			"title": "Erreurs Pharmacies",
-			"type": "table"
-		}
-	],
-	"refresh": "5m",
-	"schemaVersion": 39,
-	"tags": [],
-	"templating": {
-		"list": [
-			{
-				"current": {
-					"selected": false,
-					"text": "v2-front.staging-pharmanity.com",
-					"value": "v2-front.staging-pharmanity.com"
-				},
-				"datasource": {
-					"type": "volkovlabs-env-datasource",
-					"uid": "P9E471951A1B4106E"
-				},
-				"definition": "V2_URL",
-				"hide": 0,
-				"includeAll": false,
-				"multi": false,
-				"name": "v2_url",
-				"options": [],
-				"query": "V2_URL",
-				"refresh": 1,
-				"regex": "",
-				"skipUrlSync": false,
-				"sort": 0,
-				"type": "query"
-			}
-		]
-	},
-	"time": {
-		"from": "now-24h",
-		"to": "now"
-	},
-	"timepicker": {},
-	"timezone": "browser",
-	"title": "Erreurs Pharmacies",
-	"uid": "bdjp73tytrjeof",
-	"version": 6,
-	"weekStart": ""
+  "annotations": {
+    "list": [
+      {
+        "builtIn": 1,
+        "datasource": {
+          "type": "grafana",
+          "uid": "-- Grafana --"
+        },
+        "enable": true,
+        "hide": true,
+        "iconColor": "rgba(0, 211, 255, 1)",
+        "name": "Annotations & Alerts",
+        "type": "dashboard"
+      }
+    ]
+  },
+  "editable": true,
+  "fiscalYearStartMonth": 0,
+  "graphTooltip": 0,
+  "links": [],
+  "panels": [
+    {
+      "datasource": {
+        "type": "grafana-postgresql-datasource",
+        "uid": "P47ACC421B078165A"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "pharmacy_v2_id"
+            },
+            "properties": [
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "https://${v2_url}/backoffice/admin/pharmacies/${__data.fields.pharmacy_v2_id}"
+                  }
+                ]
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 6,
+        "w": 24,
+        "x": 0,
+        "y": 0
+      },
+      "id": 2,
+      "options": {
+        "cellHeight": "sm",
+        "footer": {
+          "countRows": false,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "datasource": {
+            "type": "grafana-postgresql-datasource",
+            "uid": "P47ACC421B078165A"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "SELECT pharmacy_id,stock_updated_at,pharmacy_v2_id\r\nFROM pharmacy_lgo\r\nGROUP BY pharmacy_id\r\nHAVING MAX(stock_updated_at) < NOW() - INTERVAL '4 days'\r\nORDER BY stock_updated_at ASC;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Pharmacies avec retard de stock",
+      "type": "table"
+    },
+    {
+      "datasource": {
+        "type": "mysql",
+        "uid": "P36913DBAE2373331"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "color": {
+            "mode": "thresholds"
+          },
+          "custom": {
+            "align": "auto",
+            "cellOptions": {
+              "type": "auto"
+            },
+            "filterable": true,
+            "inspect": false
+          },
+          "mappings": [],
+          "thresholds": {
+            "mode": "absolute",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "red",
+                "value": 80
+              }
+            ]
+          }
+        },
+        "overrides": [
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "id"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 95
+              },
+              {
+                "id": "links",
+                "value": [
+                  {
+                    "targetBlank": true,
+                    "title": "",
+                    "url": "https://${v2_url}/backoffice/admin/pharmacies/${__data.fields.id}"
+                  }
+                ]
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "created_at"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              }
+            ]
+          }
+        ]
+      },
+      "gridPos": {
+        "h": 17,
+        "w": 24,
+        "x": 0,
+        "y": 6
+      },
+      "id": 1,
+      "options": {
+        "cellHeight": "md",
+        "footer": {
+          "countRows": false,
+          "enablePagination": true,
+          "fields": "",
+          "reducer": [
+            "sum"
+          ],
+          "show": false
+        },
+        "showHeader": true,
+        "sortBy": []
+      },
+      "pluginVersion": "11.0.0",
+      "targets": [
+        {
+          "dataset": "pharmanity_staging",
+          "datasource": {
+            "type": "mysql",
+            "uid": "P36913DBAE2373331"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select \r\n    p.id, \r\n    p.raison_sociale,\r\n    l.name as lgo_name,\r\n    pe.error_message,\r\n    pe.created_at\r\nfrom \r\n    pharmacie_error pe \r\n        join pharmacie p on p.id=pe.pharmacie_id \r\n        join user_lgo ul on ul.id=p.user_lgo_id \r\n        join lgo l on l.id=ul.lgo_id \r\nwhere  p.actif = 1\r\ngroup by pharmacie_id\r\norder by pe.created_at desc",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Erreurs Pharmacies",
+      "type": "table"
+    }
+  ],
+  "refresh": "5m",
+  "schemaVersion": 39,
+  "tags": [],
+  "templating": {
+    "list": [
+      {
+        "current": {
+          "selected": false,
+          "text": "v2-front.staging-pharmanity.com",
+          "value": "v2-front.staging-pharmanity.com"
+        },
+        "datasource": {
+          "type": "volkovlabs-env-datasource",
+          "uid": "P9E471951A1B4106E"
+        },
+        "definition": "V2_URL",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "v2_url",
+        "options": [],
+        "query": "V2_URL",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      }
+    ]
+  },
+  "time": {
+    "from": "now-24h",
+    "to": "now"
+  },
+  "timeRangeUpdatedDuringEditOrView": false,
+  "timepicker": {},
+  "timezone": "browser",
+  "title": "Erreurs Pharmacies",
+  "uid": "bdjp73tytrjeof",
+  "version": 1,
+  "weekStart": ""
 }
