@@ -92,7 +92,7 @@
         },
         "showHeader": true
       },
-      "pluginVersion": "11.0.0",
+      "pluginVersion": "11.1.0",
       "targets": [
         {
           "datasource": {
@@ -217,7 +217,7 @@
         "showHeader": true,
         "sortBy": []
       },
-      "pluginVersion": "11.0.0",
+      "pluginVersion": "11.1.0",
       "targets": [
         {
           "dataset": "pharmanity_staging",
@@ -269,12 +269,35 @@
           "uid": "P9E471951A1B4106E"
         },
         "definition": "V2_URL",
-        "hide": 0,
+        "hide": 2,
         "includeAll": false,
         "multi": false,
         "name": "v2_url",
         "options": [],
         "query": "V2_URL",
+        "refresh": 1,
+        "regex": "",
+        "skipUrlSync": false,
+        "sort": 0,
+        "type": "query"
+      },
+      {
+        "current": {
+          "selected": false,
+          "text": "pharmani_data_staging",
+          "value": "pharmani_data_staging"
+        },
+        "datasource": {
+          "type": "volkovlabs-env-datasource",
+          "uid": "P9E471951A1B4106E"
+        },
+        "definition": "V1_DBNAME",
+        "hide": 0,
+        "includeAll": false,
+        "multi": false,
+        "name": "v1_dbname",
+        "options": [],
+        "query": "V1_DBNAME",
         "refresh": 1,
         "regex": "",
         "skipUrlSync": false,
@@ -287,11 +310,10 @@
     "from": "now-24h",
     "to": "now"
   },
-  "timeRangeUpdatedDuringEditOrView": false,
   "timepicker": {},
   "timezone": "browser",
   "title": "Erreurs Pharmacies",
   "uid": "bdjp73tytrjeof",
-  "version": 1,
+  "version": 2,
   "weekStart": ""
 }
