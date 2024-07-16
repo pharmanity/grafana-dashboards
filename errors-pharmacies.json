@@ -228,7 +228,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select \r\n    p.id, \r\n    p.raison_sociale,\r\n    l.name as lgo_name,\r\n    pe.error_message,\r\n    pe.created_at\r\nfrom \r\n    pharmacie_error pe \r\n        join pharmacie p on p.id=pe.pharmacie_id \r\n        join user_lgo ul on ul.id=p.user_lgo_id \r\n        join lgo l on l.id=ul.lgo_id \r\nwhere  p.actif = 1\r\ngroup by pharmacie_id\r\norder by pe.created_at desc",
+          "rawSql": "select \r\n    p.id, \r\n    p.raison_sociale,\r\n    l.name as lgo_name,\r\n    pe.error_message,\r\n    pe.created_at,\r\n    IF(boutique.meta_value = 1, 'Oui', 'Non') as boutique\r\nfrom \r\n    pharmacie_error pe \r\n        join pharmacie p on p.id=pe.pharmacie_id \r\n        join user_lgo ul on ul.id=p.user_lgo_id \r\n        join lgo l on l.id=ul.lgo_id \r\n        left join ${v1_dbname}.ph_info_meta boutique on boutique.ph_id=p.id and boutique.meta_key='boutique'\r\n        left join ${v1_dbname}.ph_info_meta pharmanity_hide on pharmanity_hide.ph_id=p.id and pharmanity_hide.meta_key='pharmanity_hide_price'\r\n        left join ${v1_dbname}.ph_api api on api.ph_id=p.id\r\nwhere  p.actif = 1\r\n    and (IFNULL(boutique.meta_value, 0) + IF(pharmanity_hide.meta_value=1, 0, 1) + api.livmeds + api.ocp + api.phr + api.pharmonweb) > 0\r\ngroup by pharmacie_id\r\norder by pe.created_at desc",
           "refId": "A",
           "sql": {
             "columns": [
