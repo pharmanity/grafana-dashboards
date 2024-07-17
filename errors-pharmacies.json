@@ -193,6 +193,30 @@
                 "value": "dateTimeAsLocal"
               }
             ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "error_message"
+            },
+            "properties": [
+              {
+                "id": "custom.width",
+                "value": 341
+              }
+            ]
+          },
+          {
+            "matcher": {
+              "id": "byName",
+              "options": "last_file"
+            },
+            "properties": [
+              {
+                "id": "unit",
+                "value": "dateTimeAsLocal"
+              }
+            ]
           }
         ]
       },
@@ -228,7 +252,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select \r\n    p.id, \r\n    p.raison_sociale,\r\n    l.name as lgo_name,\r\n    pe.error_message,\r\n    pe.created_at,\r\n    IF(boutique.meta_value = 1, 'Oui', 'Non') as boutique\r\nfrom \r\n    pharmacie_error pe \r\n        join pharmacie p on p.id=pe.pharmacie_id \r\n        join user_lgo ul on ul.id=p.user_lgo_id \r\n        join lgo l on l.id=ul.lgo_id \r\n        left join ${v1_dbname}.ph_info_meta boutique on boutique.ph_id=p.id and boutique.meta_key='boutique'\r\n        left join ${v1_dbname}.ph_info_meta pharmanity_hide on pharmanity_hide.ph_id=p.id and pharmanity_hide.meta_key='pharmanity_hide_price'\r\n        left join ${v1_dbname}.ph_api api on api.ph_id=p.id\r\nwhere  p.actif = 1\r\n    and (IFNULL(boutique.meta_value, 0) + IF(pharmanity_hide.meta_value=1, 0, 1) + api.livmeds + api.ocp + api.phr + api.pharmonweb) > 0\r\ngroup by pharmacie_id\r\norder by pe.created_at desc",
+          "rawSql": "select \r\n    p.id, \r\n    p.raison_sociale,\r\n    l.name as lgo_name,\r\n    pe.error_message,\r\n    pe.created_at,\r\n    max(sf.processed_at) last_file,\r\n    IF(boutique.meta_value = 1, 'Oui', 'Non') as boutique\r\nfrom \r\n    pharmacie_error pe \r\n        join pharmacie p on p.id=pe.pharmacie_id \r\n        join user_lgo ul on ul.id=p.user_lgo_id \r\n        join lgo l on l.id=ul.lgo_id \r\n        left join stock_file sf on sf.pharmacie_id=p.id and sf.status=1\r\n        left join ${v1_dbname}.ph_info_meta boutique on boutique.ph_id=p.id and boutique.meta_key='boutique'\r\n        left join ${v1_dbname}.ph_info_meta pharmanity_hide on pharmanity_hide.ph_id=p.id and pharmanity_hide.meta_key='pharmanity_hide_price'\r\n        left join ${v1_dbname}.ph_api api on api.ph_id=p.id\r\nwhere  p.actif = 1\r\n    and (IFNULL(boutique.meta_value, 0) + IF(pharmanity_hide.meta_value=1, 0, 1) + api.livmeds + api.ocp + api.phr + api.pharmonweb) > 0\r\ngroup by pe.pharmacie_id\r\norder by pe.created_at desc",
           "refId": "A",
           "sql": {
             "columns": [
@@ -253,7 +277,7 @@
       "type": "table"
     }
   ],
-  "refresh": "5m",
+  "refresh": "",
   "schemaVersion": 39,
   "tags": [],
   "templating": {
@@ -261,8 +285,8 @@
       {
         "current": {
           "selected": false,
-          "text": "v2-front.staging-pharmanity.com",
-          "value": "v2-front.staging-pharmanity.com"
+          "text": "secure.pharmanity.com",
+          "value": "secure.pharmanity.com"
         },
         "datasource": {
           "type": "volkovlabs-env-datasource",
@@ -284,8 +308,8 @@
       {
         "current": {
           "selected": false,
-          "text": "pharmani_data_staging",
-          "value": "pharmani_data_staging"
+          "text": "pharmani_data",
+          "value": "pharmani_data"
         },
         "datasource": {
           "type": "volkovlabs-env-datasource",
@@ -314,6 +338,6 @@
   "timezone": "browser",
   "title": "Erreurs Pharmacies",
   "uid": "bdjp73tytrjeof",
-  "version": 2,
+  "version": 1,
   "weekStart": ""
 }
